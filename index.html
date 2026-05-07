@@ -207,6 +207,15 @@
       </div>
     </div>
 
+    <div class="field" style="margin-top:4px;">
+      <label class="chip" style="border-radius:12px;padding:12px 14px;width:100%;gap:10px;align-items:flex-start;">
+        <input type="checkbox" id="consenso" name="consenso" required/>
+        <span style="font-size:.82rem;font-weight:700;color:var(--brown);line-height:1.5;text-transform:none;letter-spacing:0;">
+          Ho letto la <a href="privacy.html" target="_blank" style="color:var(--green);text-decoration:underline;">Privacy Policy</a> e acconsento al trattamento dei dati inseriti ai fini del servizio MilanoDogger.
+        </span>
+      </label>
+    </div>
+
     <button type="submit" class="btn">🐾 Registra il tuo cane!</button>
     <p class="privacy-note">Nessun dato personale richiesto. Solo info sul tuo cane 🐶</p>
   </form>
@@ -289,7 +298,7 @@
 </div>
 
 <div id="shareToast" class="share-toast">✅ Link copiato negli appunti!</div>
-<footer><strong>🐾 MilanoDogger</strong><br>La community dei proprietari di cane di Milano</footer>
+<footer><strong>🐾 MilanoDogger</strong><br>La community dei proprietari di cane di Milano<br><a href="privacy.html" style="color:var(--green);font-size:.75rem;">Privacy Policy</a></footer>
 
 <script>
 // ── AREE — fetch dinamico dal Comune di Milano ──────────────────────────
@@ -377,8 +386,10 @@ document.getElementById('dogForm').addEventListener('submit',function(e){
   e.preventDefault();
   const zona=selZ.value.trim();
   const nomeCane=document.getElementById('nomeCane').value.trim();
+  const consenso=document.getElementById('consenso').checked;
   if(!zona){selZ.classList.add('err');selZ.focus();setTimeout(()=>selZ.classList.remove('err'),2000);return;}
   if(!nomeCane){const el=document.getElementById('nomeCane');el.classList.add('err');el.focus();el.addEventListener('input',()=>el.classList.remove('err'),{once:true});return;}
+  if(!consenso){const el=document.getElementById('consenso').parentElement;el.style.borderColor='#E05A2B';setTimeout(()=>el.style.borderColor='',2000);el.scrollIntoView({behavior:'smooth',block:'center'});return;}
   const sesso=(document.querySelector('input[name=sesso]:checked')||{}).value||'';
     const taglia=(document.querySelector('input[name=taglia]:checked')||{}).value||'';
   const orari=[...document.querySelectorAll('input[name=orari]:checked')].map(c=>c.value).join(', ');
