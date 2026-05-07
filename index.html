@@ -47,6 +47,12 @@
     .about-box{background:#F8F5F0;border-radius:16px;padding:18px;}
     .about-header{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
     .about-text{font-size:.87rem;color:var(--brown);font-weight:600;line-height:1.65;}
+    .donate-label{font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--green);margin:14px 0 8px;}
+    .donate-btns{display:flex;gap:8px;}
+    .donate-btn{flex:1;text-align:center;border-radius:12px;padding:10px 6px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;text-decoration:none;display:block;}
+    .donate-btn-2{background:#fff;border:2px solid #E8E0D8;color:var(--brown);}
+    .donate-btn-5{background:var(--amber);border:2px solid var(--amber);color:var(--brown);}
+    .donate-btn-10{background:var(--green);border:2px solid var(--green);color:#fff;}
     .contact-box{background:#fff;border:2px solid #E8E0D8;border-radius:16px;padding:18px;text-align:center;}
     .contact-box p{font-size:.87rem;color:var(--grey);font-weight:600;line-height:1.6;margin-bottom:12px;}
     .contact-link{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-family:'Fredoka One',cursive;font-size:1rem;padding:10px 24px;border-radius:12px;text-decoration:none;}
@@ -270,6 +276,12 @@
         </div>
       </div>
       <p class="about-text">Ciao! Sono Angelo, proprietario di Ugotto. Ho creato questa applicazione perché ogni mattina mi chiedevo: <em>"chi altri porta il suo amichetto qui?"</em> Si tratta di un progetto personale, portato avanti la sera con tanto caffè e zero budget. Se ti piace e vuoi aiutarmi a tenerlo vivo e a migliorarlo, anche un piccolo contributo fa la differenza. 🙏</p>
+      <div class="donate-label">☕ Offrimi un caffè (facoltativo)</div>
+      <div class="donate-btns">
+        <a href="https://paypal.me/tomangelo91/2" onclick="trackEvent('donazione_click','monetizzazione','2euro')" target="_blank" class="donate-btn donate-btn-2">☕ €2</a>
+        <a href="https://paypal.me/tomangelo91/5" onclick="trackEvent('donazione_click','monetizzazione','5euro')" target="_blank" class="donate-btn donate-btn-5">🍕 €5</a>
+        <a href="https://paypal.me/tomangelo91/10" onclick="trackEvent('donazione_click','monetizzazione','10euro')" target="_blank" class="donate-btn donate-btn-10">🚀 €10</a>
+      </div>
     </div>
 
     <a href="mappa.html" class="btn-mappa" onclick="trackEvent('vai_mappa','navigation','success_screen')" style="margin-top:14px;background:var(--green);color:#fff;border-color:var(--green);">🗺️ Vai alla mappa</a>
@@ -289,91 +301,12 @@
 <footer><strong>🐾 MilanoDogger</strong><br>La community dei proprietari di cane di Milano<br><a href="privacy.html" style="color:var(--green);font-size:.75rem;">Privacy Policy</a></footer>
 
 <script>
-// ── AREE — fetch dinamico dal Comune di Milano ──────────────────────────
-const CKAN_URL = 'https://dati.comune.milano.it/dataset/7efe1ac1-7a5f-4e33-b7ab-c24438bc9fb1/resource/4e03e253-4a83-4051-a4c0-6c82a08e7733/download/ds52_aree_fruizione_cani.csv';
+// ── AREE PER MUNICIPIO (dati statici, 294 aree uniche) ──────────────────
+const AREE = {"1": ["giardini Montanelli Indro", "giardino Custrà Antonio", "giardino Malgeri Alfredo", "giardino Renata Tebaldi", "giardino Roberto Bazlen", "giardino della Guastalla", "largo Quinto Alpini", "parco Papa Giovanni Paolo II", "parco Sempione", "piazza Venino", "piazzale Baracca", "via Ronzoni", "viale Beatrice d'Este", "viale Bianca Maria", "viale Caldara", "viale Elvezia", "viale Monte Santo"], "2": ["giardino Aldo Protti e Gregor Mendel", "giardino Franca Rame", "giardino Gabriele Basilico", "giardino Sandra Mondaini e Raimondo Vianello", "largo San Valentino", "parco Adriano", "parco Francesco Di Cataldo", "parco Martiri delle Libertà Iracheni Vittime del Terrorismo", "parco Panza", "parco Trotter", "parco Villa Finzi", "piazza Carbonari", "piazzale Farina", "via Cislaghi", "via Giacosa", "via Giulietti", "via Mulas", "via Rucellai", "viale Monza", "vie Breda - Angeleri", "vie Dal Pozzo Toscanelli - Rottole", "vie Giacometti - Gilardi - Breda", "vie Mariani Pompeo - Padre Semeria", "vie Petrocchi - Bertelli", "vie Rho - Conti Carlo", "vie Trasimeno - San Mamete", "vie Vittorelli - Padova", "vie Zuretti - Tirano - Naviglio Martesana"], "3": ["cavalcavia Buccari - via Tucidide", "giardini Giovanni Falcone e Paolo Borsellino", "giardino Alberto Vigevani", "giardino Buonantuono Carlo e Tumminello Vincenzo", "giardino Fausto Tinelli e Lorenzo Iannucci", "giardino Italo Pietra", "giardino Marisa Bellisario", "giardino Polotti Giulio", "giardino Ramelli Sergio", "giardino Teresa Pomodoro", "giardino sorelle Mirabal ‘’Las Mariposas’’", "parco della Lambretta", "piazzale Bacone", "piazzale Gorini", "piazzale Susa", "via Don Calabria n. 6", "via Feltre", "via Marescalchi - San Gerolamo", "via Morgagni G.B.", "via Olgettina", "via Pini", "via Pitteri", "via Rizzoli", "viale Argonne", "vie Cima - Bistolfi", "vie Pascal - Valvassori Peroni - Clericetti"], "4": ["giardino Candia Marcello", "giardino Francesco Rucci", "giardino Oreste Del Buono", "parco Alessandrini", "parco Forlanini", "parco Formentano", "parco Galli", "piazza Bologna - via Sceiwiller - Bacchiglione", "piazza Insubria", "piazza Ovidio", "piazzale Libia", "piazzale Rosa Gabriele", "via Cassinis", "via Caviglia", "via Manzù", "via Rogoredo", "via Rosselli fratelli", "via San Martino Don Carlo", "via San Venerio", "via Serrati", "via Sordello", "via Sulmona", "via Vittorini Elio", "viale Cirene", "vie Cadibona - Monte Velino", "vie Dalmazia - Toscolano", "vie Facchinetti - Bellosio", "vie Forlanini - Garavaglia", "vie Marignano - Busseto - Fidenza", "vie Mecenate - Maderna", "vie Medici del Vascello - Merezzate - Colorni", "vie Nervesa - Gonzales", "vie Salomone - Quintiliano", "vie Zama - Salomone"], "5": ["giardino Agnesi Maria Teresa", "parco Autieri d'Italia", "parco Chiesa Rossa", "parco Giovannino Guareschi e Alberto Manzi", "parco Ravizza", "parco della Resistenza", "parco della Vettabbia", "parco delle memorie industriali", "piazza Sraffa", "piazza Trento", "via Bottoni", "via Comisso", "via Costantino Baroni", "via De Sanctis", "via Don Rodrigo", "via Fra Pampuri Riccardo", "via Manduria", "via San Dionigi", "via San Domenico Savio", "via dei Missaglia", "viale Giovanni da Cermenate", "viale Ortles - Calabiana", "vie Aicardo - Boeri - Giovanni da Cermenate - piazza caduti del Lavoro", "vie Balduccio da Pisa - Calabiana", "vie Banfi G. - Calzolari - Largo Muzio", "vie Broni - Gargano", "vie Bugatto Zanetto - Erice", "vie Chiesa Rossa - Sant'Abbondio", "vie Donna Prassede, Boffalora, Jan Palach", "vie Garelli - Stucchi - Selvanesco - Romeo", "vie Gratosoglio - Feraboli", "vie Orlando - Feraboli"], "6": ["giardino Alberto Moravia", "giardino Anna Del Bo Boffino", "giardino Ascanio Raffaele Ciriello", "giardino Vincenzo Muccioli", "giardino Yitzhak Rabin", "giardino delle Crocerossine", "largo Giambellino", "parco Andrea Campagna", "parco Giuseppe Sala", "parco Giussani Don Luigi", "parco Robert Baden Powell", "parco dei Fontanili", "parco ex Sieroterapico", "piazza Frattini", "piazza Napoli", "piazza Tirana", "piazza delle Milizie", "piazzale delle Bande Nere", "via Argelati", "via Koch", "via Lorenteggio", "via Martinelli", "via Parenzo", "via San Paolino - San Vigilio", "via degli Anemoni - Gigli - dei Giacinti - Primaticcio", "via della Ferrera", "vie Bari - Faenza - Tobagi", "vie Bellini - Brunelleschi", "vie Boffalora - Barona - Don Primo Mazzolari", "vie Cascina Bianca - De Pretis - Danusso - Finetti", "vie Filippo da Liscate - Russoli", "vie Gonin - Giordani", "vie Lodovico il Moro - Santi F.", "vie Lorenteggio - Bisceglie - Giordani", "vie Ovada - San Vigilio", "vie Primaticcio - Legioni Romane", "vie Rimini - La Spezia - Famagosta", "vie Rondoni - Neri", "vie Savona - Brunelleschi", "vie Strozzi - Caterina da Forlì", "vie Voltri - De Nicola", "vie Voltri - Ovada"], "7": ["giardino A.I.D.O.", "giardino Carlo Ramous", "giardino Marangoni Luigi", "giardino Sant’Annibale Maria di Francia", "parco Annarumma Antonio", "parco delle Cave", "parco di Baggio", "parco in Memoria delle vittime Italiane nei Gulag", "piazza Brescia", "piazza Melozzo da Forlì", "piazza Po", "piazza Segesta", "piazza Selinunte", "piazza Sicilia", "piazza Siena", "quartiere Muggiano", "via Arcangeli", "via Dezza", "via Luraghi", "via Noale", "via Tofano", "via Zoia Fratelli", "vie Amantea - Budrio", "vie Colombi - Bentivoglio - Viterbo", "vie Diotti - Quinto Romano - Colla", "vie Fornari, Marostica, Massaua", "vie Lucca - Zurigo - Isola di Creta", "vie Marchesi - Taggia - Paone", "vie Tosi - San Giusto - Pio II", "vie Val d'Intelvi - Sgambati", "vie Valsesia - Parri - Bucone"], "8": ["giardini dei Caduti di Nassiriya", "giardino Carmelo Bene", "giardino Ilaria Alpi", "giardino Pierangelo Bertoli", "giardino Salvador Allende", "parco Cascina Merlata", "parco Franco Verga", "parco Guido Vergani", "parco Sandro Pertini", "parco Testori", "parco Valentino Bompiani", "parco di Villa Scheibler", "piazza Coriolano", "piazza Firenze", "piazza Giulio Cesare", "piazzale Accursio", "piazzale Chiesa Damiano", "piazzale Lotto", "via Chiarelli", "via De Roberto", "via Lampugnano", "via Sapri", "via Terzaghi", "via Tolentino", "vie Aldini - Graf", "vie Appennini - Consolini - Bolla", "vie Boine - Collecchio", "vie Borsa - Cilea", "vie Castelli - Fusinato - Riccione", "vie Fabrizi, Cinque Maggio, Aldini, Eritrea", "vie Ludovico di Breme - Giovanni da Udine", "vie Messina - Calvino", "vie Traiano - Colonna - Arnaboldi", "vie Trenno - Ippodromo", "vie Villapizzone - Cretese"], "9": ["giardino Bruno Munari", "giardino Gina Galeotti Bianchi", "giardino Maria Peron e suor Giovanna Mosna", "giardino Pagani Cesare", "giardino Wanda Osiris", "parco Nicolò Savarino", "parco Nord", "parco Villa Litta", "parco Walter Chiari", "parco biblioteca degli alberi", "parco della Torre", "parco delle Favole", "piazza Einaudi - viale della Liberazione", "piazzale Lugano", "piazzale Maciachini - Marche - Valassina", "via Cagni", "via De Castillia", "via Gregorovius", "via Maloja", "via Racconigi", "via Santagostino Paolo", "viale Ca' Granda - De Angelis", "viale Cà Granda - Testi - Guarini Matteucci", "viale Fermi Enrico", "viale Fulvio Testi - della Porta", "viale Sarca - Silvestri", "viale Sarca - via Cozzi", "viali Sarca - Silvestri - Fulvio Testi", "vie Bovisasca - Cosenz", "vie Bovisasca - Modignani - Assietta \" Pioppeto Boviscasca\"", "vie Catone - Maffucci", "vie Cusio - Toce - Boltraffio", "vie Della Senna - Fontanelli", "vie Don Grioli - Cialdini - Pellegrino Rossi", "vie Dora Riparia - Carli - Salvemini", "vie Forni - Comasina - Modignani", "vie Giolli - Testi", "vie Maffucci - Acerenza", "vie Pesaro - Urbino", "vie Populonia - Murat - Valassina", "vie Pozzobonelli, Sogno", "vie Sarca - Emanueli", "vie Senigallia - Girardengo", "vie Sesto San Giovanni - Padre Gerardo Beccaro", "vie Siderno - Padre Luigi Monti - Gatti", "vie Stelvio - Bassi", "vie Tartini - Candiani", "vie Val Cismon - Padre Luigi Monti", "vie Vincenzo da Seregno - Bisnati"]};
 
-const AREE_FALLBACK = const AREE = {"1":["giardini Montanelli Indro","giardino Custrà Antonio","giardino Malgeri Alfredo","giardino Renata Tebaldi","giardino Roberto Bazlen","giardino della Guastalla","largo Quinto Alpini","parco Papa Giovanni Paolo II","parco Sempione","piazza Venino","piazzale Baracca","via Ronzoni","viale Beatrice d'Este","viale Bianca Maria","viale Caldara","viale Elvezia","viale Monte Santo"],"2":["giardino Aldo Protti e Gregor Mendel","giardino Franca Rame","giardino Gabriele Basilico","giardino Sandra Mondaini e Raimondo Vianello","largo San Valentino","parco Adriano","parco Francesco Di Cataldo","parco Martiri delle Libertà Iracheni Vittime del Terrorismo","parco Panza","parco Trotter","parco Villa Finzi","piazza Carbonari","piazzale Farina","via Cislaghi","via Giacosa","via Giulietti","via Mulas","via Rucellai","viale Monza","vie Breda - Angeleri","vie Dal Pozzo Toscanelli - Rottole","vie Giacometti - Gilardi - Breda","vie Mariani Pompeo - Padre Semeria","vie Petrocchi - Bertelli","vie Rho - Conti Carlo","vie Trasimeno - San Mamete","vie Vittorelli - Padova","vie Zuretti - Tirano - Naviglio Martesana"],"3":["cavalcavia Buccari - via Tucidide","giardini Giovanni Falcone e Paolo Borsellino","giardino Alberto Vigevani","giardino Buonantuono Carlo e Tumminello Vincenzo","giardino Fausto Tinelli e Lorenzo Iannucci","giardino Italo Pietra","giardino Marisa Bellisario","giardino Polotti Giulio","giardino Ramelli Sergio","giardino Teresa Pomodoro","giardino sorelle Mirabal ''Las Mariposas''","parco della Lambretta","piazzale Bacone","piazzale Gorini","piazzale Susa","via Don Calabria n. 6","via Feltre","via Marescalchi - San Gerolamo","via Morgagni G.B.","via Olgettina","via Pini","via Pitteri","via Rizzoli","viale Argonne","vie Cima - Bistolfi","vie Pascal - Valvassori Peroni - Clericetti"],"4":["giardino Candia Marcello","giardino Francesco Rucci","giardino Oreste Del Buono","parco Alessandrini","parco Forlanini","parco Formentano","parco Galli","piazza Bologna - via Sceiwiller - Bacchiglione","piazza Insubria","piazza Ovidio","piazzale Libia","piazzale Rosa Gabriele","via Cassinis","via Caviglia","via Manzù","via Rogoredo","via Rosselli fratelli","via San Martino Don Carlo","via San Venerio","via Serrati","via Sordello","via Sulmona","via Vittorini Elio","viale Cirene","vie Cadibona - Monte Velino","vie Dalmazia - Toscolano","vie Facchinetti - Bellosio","vie Forlanini - Garavaglia","vie Marignano - Busseto - Fidenza","vie Mecenate - Maderna","vie Medici del Vascello - Merezzate - Colorni","vie Nervesa - Gonzales","vie Salomone - Quintiliano","vie Zama - Salomone"],"5":["giardino Agnesi Maria Teresa","parco Autieri d'Italia","parco Chiesa Rossa","parco Giovannino Guareschi e Alberto Manzi","parco Ravizza","parco della Resistenza","parco della Vettabbia","parco delle memorie industriali","piazza Sraffa","piazza Trento","via Bottoni","via Comisso","via Costantino Baroni","via De Sanctis","via Don Rodrigo","via Fra Pampuri Riccardo","via Manduria","via San Dionigi","via San Domenico Savio","via dei Missaglia","viale Giovanni da Cermenate","viale Ortles - Calabiana","vie Aicardo - Boeri - Giovanni da Cermenate - piazza caduti del Lavoro","vie Balduccio da Pisa - Calabiana","vie Banfi G. - Calzolari - Largo Muzio","vie Broni - Gargano","vie Bugatto Zanetto - Erice","vie Chiesa Rossa - Sant'Abbondio","vie Donna Prassede, Boffalora, Jan Palach","vie Garelli - Stucchi - Selvanesco - Romeo","vie Gratosoglio - Feraboli","vie Orlando - Feraboli"],"6":["giardino Alberto Moravia","giardino Anna Del Bo Boffino","giardino Ascanio Raffaele Ciriello","giardino Vincenzo Muccioli","giardino Yitzhak Rabin","giardino delle Crocerossine","largo Giambellino","parco Andrea Campagna","parco Giuseppe Sala","parco Giussani Don Luigi","parco Robert Baden Powell","parco dei Fontanili","parco ex Sieroterapico","piazza Frattini","piazza Napoli","piazza Tirana","piazza delle Milizie","piazzale delle Bande Nere","via Argelati","via Koch","via Lorenteggio","via Martinelli","via Parenzo","via San Paolino - San Vigilio","via degli Anemoni - Gigli - dei Giacinti - Primaticcio","via della Ferrera","vie Bari - Faenza - Tobagi","vie Bellini - Brunelleschi","vie Boffalora - Barona - Don Primo Mazzolari","vie Cascina Bianca - De Pretis - Danusso - Finetti","vie Filippo da Liscate - Russoli","vie Gonin - Giordani","vie Lodovico il Moro - Santi F.","vie Lorenteggio - Bisceglie - Giordani","vie Ovada - San Vigilio","vie Primaticcio - Legioni Romane","vie Rimini - La Spezia - Famagosta","vie Rondoni - Neri","vie Savona - Brunelleschi","vie Strozzi - Caterina da Forlì","vie Voltri - De Nicola","vie Voltri - Ovada"],"7":["giardino A.I.D.O.","giardino Carlo Ramous","giardino Marangoni Luigi","giardino Sant'Annibale Maria di Francia","parco Annarumma Antonio","parco delle Cave","parco di Baggio","parco in Memoria delle vittime Italiane nei Gulag","piazza Brescia","piazza Melozzo da Forlì","piazza Po","piazza Segesta","piazza Selinunte","piazza Sicilia","piazza Siena","quartiere Muggiano","via Arcangeli","via Dezza","via Luraghi","via Noale","via Tofano","via Zoia Fratelli","vie Amantea - Budrio","vie Colombi - Bentivoglio - Viterbo","vie Diotti - Quinto Romano - Colla","vie Fornari, Marostica, Massaua","vie Lucca - Zurigo - Isola di Creta","vie Marchesi - Taggia - Paone","vie Tosi - San Giusto - Pio II","vie Val d'Intelvi - Sgambati","vie Valsesia - Parri - Bucone"],"8":["giardini dei Caduti di Nassiriya","giardino Carmelo Bene","giardino Ilaria Alpi","giardino Pierangelo Bertoli","giardino Salvador Allende","parco Cascina Merlata","parco Franco Verga","parco Guido Vergani","parco Sandro Pertini","parco Testori","parco Valentino Bompiani","parco di Villa Scheibler","piazza Coriolano","piazza Firenze","piazza Giulio Cesare","piazzale Accursio","piazzale Chiesa Damiano","piazzale Lotto","via Chiarelli","via De Roberto","via Lampugnano","via Sapri","via Terzaghi","via Tolentino","vie Aldini - Graf","vie Appennini - Consolini - Bolla","vie Boine - Collecchio","vie Borsa - Cilea","vie Castelli - Fusinato - Riccione","vie Fabrizi, Cinque Maggio, Aldini, Eritrea","vie Ludovico di Breme - Giovanni da Udine","vie Messina - Calvino","vie Traiano - Colonna - Arnaboldi","vie Trenno - Ippodromo","vie Villapizzone - Cretese"],"9":["giardino Bruno Munari","giardino Gina Galeotti Bianchi","giardino Maria Peron e suor Giovanna Mosna","giardino Pagani Cesare","giardino Wanda Osiris","parco Nicolò Savarino","parco Nord","parco Villa Litta","parco Walter Chiari","parco biblioteca degli alberi","parco della Torre","parco delle Favole","piazza Einaudi - viale della Liberazione","piazzale Lugano","piazzale Maciachini - Marche - Valassina","via Cagni","via De Castillia","via Gregorovius","via Maloja","via Racconigi","via Santagostino Paolo","viale Ca' Granda - De Angelis","viale Cà Granda - Testi - Guarini Matteucci","viale Fermi Enrico","viale Fulvio Testi - della Porta","viale Sarca - Silvestri","viale Sarca - via Cozzi","viali Sarca - Silvestri - Fulvio Testi","vie Bovisasca - Cosenz","vie Bovisasca - Modignani - Assietta Pioppeto Boviscasca","vie Catone - Maffucci","vie Cusio - Toce - Boltraffio","vie Della Senna - Fontanelli","vie Don Grioli - Cialdini - Pellegrino Rossi","vie Dora Riparia - Carli - Salvemini","vie Forni - Comasina - Modignani","vie Giolli - Testi","vie Maffucci - Acerenza","vie Pesaro - Urbino","vie Populonia - Murat - Valassina","vie Pozzobonelli, Sogno","vie Sarca - Emanueli","vie Senigallia - Girardengo","vie Sesto San Giovanni - Padre Gerardo Beccaro","vie Siderno - Padre Luigi Monti - Gatti","vie Stelvio - Bassi","vie Tartini - Candiani","vie Val Cismon - Padre Luigi Monti","vie Vincenzo da Seregno - Bisnati"]};
-
-async function fetchAreePerMunicipio(){
-  try {
-    const res = await fetch(CKAN_URL);
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const txt = await res.text();
-    const lines = txt.trim().split('\n').filter(l=>l.trim());
-    // Auto-rileva separatore (virgola o punto e virgola)
-    const sep = lines[0].includes(';') ? ';' : ',';
-    const headers = lines[0].split(sep).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
-    const idxM = headers.findIndex(h=>h.includes('municipio'));
-    const idxN = headers.findIndex(h=>h.includes('localit'));
-    if(idxM===-1||idxN===-1) throw new Error('Colonne non trovate: '+headers.join(','));
-    const grouped = {};
-    lines.slice(1).forEach(line=>{
-      const vals = line.split(sep).map(v=>v.trim().replace(/^"|"$/g,''));
-      const m = (vals[idxM]||'').trim();
-      const nome = (vals[idxN]||'').trim();
-      if(!m||!nome) return;
-      if(!grouped[m]) grouped[m] = new Set();
-      grouped[m].add(nome);
-    });
-    const result = {};
-    Object.keys(grouped).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(m=>{
-      result[m] = [...grouped[m]].sort();
-    });
-    const total = Object.values(result).flat().length;
-    if(total===0) throw new Error('Nessuna area parsata');
-    console.log('✅ Aree form caricate dal Comune:', total);
-    return result;
-  } catch(err) {
-    console.warn('⚠️ Fallback dati locali:', err.message);
-    return AREE_FALLBACK;
-  }
-}
-
-let AREE = AREE_FALLBACK;
-const AREA_TO_MUN = {};
-function buildAreaToMun(aree){
-  Object.keys(AREA_TO_MUN).forEach(k=>delete AREA_TO_MUN[k]);
-  Object.entries(aree).forEach(([m,list])=>list.forEach(a=>AREA_TO_MUN[a]=m));
-}
-buildAreaToMun(AREE);
-
-const pb=document.getElementById('pawsBg');
-for(let i=0;i<24;i++){const s=document.createElement('span');s.textContent='🐾';pb.appendChild(s);}
-
-const selM=document.getElementById('municipio');
-const selZ=document.getElementById('zona');
-
-function populateZone(mun, preselect){
-  selZ.innerHTML='<option value="">Seleziona l\'area…</option>';
-  if(!mun){selZ.disabled=true;return;}
-  (AREE[mun]||[]).forEach(a=>{
-    const o=document.createElement('option');
-    o.value=o.textContent=a;
-    if(a===preselect)o.selected=true;
-    selZ.appendChild(o);
-  });
-  selZ.disabled=false;
-}
 
 selM.addEventListener('change',()=>populateZone(selM.value,null));
 
-// Carica aree dinamicamente all'avvio
-fetchAreePerMunicipio().then(areeAggiornate => {
-  AREE = areeAggiornate;
-  buildAreaToMun(AREE);
-  // Riapplica selezione se municipio già scelto o parametro URL presente
-  const munCorrente = selM.value;
-  if(areaParam){
-    const m = AREA_TO_MUN[areaParam];
-    if(m){ selM.value=m; populateZone(m, areaParam); }
-  } else if(munCorrente){
-    populateZone(munCorrente, null);
-  }
-}).catch(err => {
-  console.warn('Fetch fallito, uso fallback:', err);
-  // Fallback già in AREE, riapplica se municipio selezionato
-  if(selM.value) populateZone(selM.value, null);
-});
 
 const params=new URLSearchParams(window.location.search);
 const areaParam=params.get('area')||'';
@@ -410,7 +343,7 @@ document.getElementById('dogForm').addEventListener('submit',function(e){
 
 function shareLink(){
   trackEvent('condividi_click', 'engagement', 'form');
-  const url='https://tomangelo91.github.io/milanodogger';
+  const url='https://tomangelo91.github.io/Milanodogger';
   const text='🐾 Registra il tuo cane su MilanoDogger e scopri chi frequenta la tua area cani!';
   if(navigator.share){navigator.share({title:'MilanoDogger',text,url}).catch(()=>{});}
   else{navigator.clipboard.writeText(url).then(()=>{const t=document.getElementById('shareToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);});}
