@@ -300,12 +300,15 @@ async function fetchAreePerMunicipio(){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const txt = await res.text();
     const lines = txt.trim().split('\n').filter(l=>l.trim());
-    const headers = lines[0].split(';').map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
+    // Auto-rileva separatore (virgola o punto e virgola)
+    const sep = lines[0].includes(';') ? ';' : ',';
+    const headers = lines[0].split(sep).map(h=>h.trim().replace(/^"|"$/g,'').toLowerCase());
     const idxM = headers.findIndex(h=>h.includes('municipio'));
     const idxN = headers.findIndex(h=>h.includes('localit'));
+    if(idxM===-1||idxN===-1) throw new Error('Colonne non trovate: '+headers.join(','));
     const grouped = {};
     lines.slice(1).forEach(line=>{
-      const vals = line.split(';').map(v=>v.trim().replace(/^"|"$/g,''));
+      const vals = line.split(sep).map(v=>v.trim().replace(/^"|"$/g,''));
       const m = (vals[idxM]||'').trim();
       const nome = (vals[idxN]||'').trim();
       if(!m||!nome) return;
@@ -316,7 +319,9 @@ async function fetchAreePerMunicipio(){
     Object.keys(grouped).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(m=>{
       result[m] = [...grouped[m]].sort();
     });
-    console.log('✅ Aree form caricate dal Comune:', Object.values(result).flat().length);
+    const total = Object.values(result).flat().length;
+    if(total===0) throw new Error('Nessuna area parsata');
+    console.log('✅ Aree form caricate dal Comune:', total);
     return result;
   } catch(err) {
     console.warn('⚠️ Fallback dati locali:', err.message);
@@ -356,11 +361,18 @@ selM.addEventListener('change',()=>populateZone(selM.value,null));
 fetchAreePerMunicipio().then(areeAggiornate => {
   AREE = areeAggiornate;
   buildAreaToMun(AREE);
-  // Se c'era un parametro URL, riapplica la selezione
+  // Riapplica selezione se municipio già scelto o parametro URL presente
+  const munCorrente = selM.value;
   if(areaParam){
     const m = AREA_TO_MUN[areaParam];
     if(m){ selM.value=m; populateZone(m, areaParam); }
+  } else if(munCorrente){
+    populateZone(munCorrente, null);
   }
+}).catch(err => {
+  console.warn('Fetch fallito, uso fallback:', err);
+  // Fallback già in AREE, riapplica se municipio selezionato
+  if(selM.value) populateZone(selM.value, null);
 });
 
 const params=new URLSearchParams(window.location.search);
