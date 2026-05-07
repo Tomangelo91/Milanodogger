@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registra il tuo cane 🐾 — MilanoDogger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--green:#2A5F3F;--green-l:#3A7D56;--amber:#F4A527;--amber-l:#FFC84A;--cream:#FDF6EC;--brown:#3B2A1A;--grey:#7A6E65;--radius:18px;}
+    body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--brown);min-height:100vh;overflow-x:hidden;}
+    .hero{background:var(--green);padding:44px 24px 58px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;bottom:-30px;left:0;right:0;height:60px;background:var(--cream);border-radius:50% 50% 0 0/60px 60px 0 0;}
+    .paws-bg{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.06;font-size:48px;display:flex;flex-wrap:wrap;gap:20px;padding:16px;pointer-events:none;overflow:hidden;}
+    .logo-icon{font-size:68px;display:block;animation:bounce 2.4s ease-in-out infinite;position:relative;z-index:1;}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .hero h1{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,7vw,2.6rem);color:#fff;margin-top:12px;line-height:1.1;position:relative;z-index:1;}
+    .hero h1 span{color:var(--amber);}
+    .hero p{color:rgba(255,255,255,.82);font-size:.95rem;font-weight:600;margin-top:8px;line-height:1.5;position:relative;z-index:1;}
+    .badge{display:inline-block;background:var(--amber);color:var(--brown);font-weight:800;font-size:.75rem;padding:4px 14px;border-radius:99px;margin-top:12px;position:relative;z-index:1;letter-spacing:.5px;text-transform:uppercase;}
+    .card{background:#fff;margin:8px 16px 16px;border-radius:var(--radius);padding:24px 20px 28px;box-shadow:0 4px 32px rgba(42,95,63,.10);}
+    .section-label{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+    .section-label::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--green-l),transparent);border-radius:2px;margin-left:4px;}
+    .field{margin-bottom:16px;}
+    label{display:block;font-weight:700;font-size:.82rem;color:var(--grey);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
+    input[type=text],select{width:100%;padding:13px 15px;border:2px solid #E8E0D8;border-radius:12px;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;color:var(--brown);background:#FAFAF8;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;}
+    input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(42,95,63,.12);background:#fff;}
+    select:disabled{opacity:.45;cursor:not-allowed;}
+    .check-group{display:flex;flex-wrap:wrap;gap:8px;}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border:2px solid #E8E0D8;border-radius:99px;cursor:pointer;transition:all .18s;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;color:var(--grey);background:#FAFAF8;user-select:none;}
+    .chip input{display:none;}
+    .chip:has(input:checked){background:var(--green);border-color:var(--green);color:#fff;}
+    .divider{height:1px;background:#EDE7DF;margin:20px 0 16px;}
+    .btn{width:100%;padding:16px;background:var(--amber);color:var(--brown);border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;margin-top:8px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(244,165,39,.35);display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn:hover{background:var(--amber-l);transform:translateY(-2px);}
+    .privacy-note{font-size:.75rem;color:var(--grey);text-align:center;margin-top:12px;line-height:1.5;}
+    .btn-mappa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#fff;border:2px solid var(--green);border-radius:12px;font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--green);text-decoration:none;transition:all .15s;}
+    .btn-mappa:hover{background:var(--green);color:#fff;}
+    .success-screen{display:none;animation:fadeIn .5s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .dog-name-display{background:var(--green);color:#fff;font-family:'Fredoka One',cursive;font-size:1.4rem;padding:10px 28px;border-radius:99px;display:inline-block;}
+    .value-box{background:var(--green);border-radius:16px;padding:18px 20px;margin:16px 0;}
+    .value-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;}
+    .value-row:last-child{margin-bottom:0;}
+    .value-title{font-family:'Fredoka One',cursive;font-size:1rem;color:var(--amber);}
+    .value-desc{font-size:.8rem;color:rgba(255,255,255,.8);font-weight:600;margin-top:2px;line-height:1.5;}
+    .about-box{background:#F8F5F0;border-radius:16px;padding:18px;}
+    .about-header{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+    .about-text{font-size:.87rem;color:var(--brown);font-weight:600;line-height:1.65;}
+    .donate-label{font-family:'Fredoka One',cursive;font-size:.9rem;color:var(--green);margin:14px 0 8px;}
+    .donate-btns{display:flex;gap:8px;}
+    .donate-btn{flex:1;text-align:center;border-radius:12px;padding:10px 6px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.88rem;text-decoration:none;display:block;}
+    .donate-btn-2{background:#fff;border:2px solid #E8E0D8;color:var(--brown);}
+    .donate-btn-5{background:var(--amber);border:2px solid var(--amber);color:var(--brown);}
+    .donate-btn-10{background:var(--green);border:2px solid var(--green);color:#fff;}
+    .contact-box{background:#fff;border:2px solid #E8E0D8;border-radius:16px;padding:18px;text-align:center;}
+    .contact-box p{font-size:.87rem;color:var(--grey);font-weight:600;line-height:1.6;margin-bottom:12px;}
+    .contact-link{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-family:'Fredoka One',cursive;font-size:1rem;padding:10px 24px;border-radius:12px;text-decoration:none;}
+    .contact-link:hover{background:var(--green-l);}
+    .share-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:#fff;border:2px solid #E8E0D8;border-radius:12px;font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--grey);cursor:pointer;margin-top:10px;transition:all .15s;}
+    .share-btn:hover{border-color:var(--green);color:var(--green);}
+    .share-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--brown);color:#fff;font-family:'Nunito',sans-serif;font-weight:700;font-size:.85rem;padding:10px 20px;border-radius:99px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
+    .share-toast.show{opacity:1;}
+    footer{text-align:center;padding:16px 16px 36px;font-size:.78rem;color:var(--grey);font-weight:600;}
+    footer strong{color:var(--green);font-family:'Fredoka One',cursive;font-size:.95rem;}
+    .err{border-color:#E05A2B!important;}
+  </style>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8W1YQ31JJZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8W1YQ31JJZ');
+
+    // Tracciamento eventi custom MilanoDogger
+    function trackEvent(action, category, label){
+      gtag('event', action, {event_category: category, event_label: label});
+    }
+  </script>
+</head>
+<body>
+
+<div class="hero">
+  <div class="paws-bg" id="pawsBg"></div>
+  <span class="logo-icon">🐾</span>
+  <h1>Registra il tuo <span>cane!</span></h1>
+  <p>Scopri chi frequenta la tua area cani.<br>Connettiti con i proprietari vicino a te.</p>
+  <span class="badge">📍 MilanoDogger — Community Milano</span>
+</div>
+
+<div class="card" id="formCard">
+
+  <a href="mappa.html" class="btn-mappa">🗺️ Esplora la mappa delle aree cani</a>
+
+  <div class="divider"></div>
+  <form id="dogForm" novalidate>
+
+    <div class="section-label">📍 Area cani</div>
+
+    <div class="field">
+      <label>Municipio *</label>
+      <select id="municipio" name="municipio">
+        <option value="">Seleziona il municipio…</option>
+        <option value="1">Municipio 1 — Centro storico</option>
+        <option value="2">Municipio 2 — Greco, Turro, Loreto</option>
+        <option value="3">Municipio 3 — Porta Venezia, Città Studi</option>
+        <option value="4">Municipio 4 — Vittoria, Forlanini</option>
+        <option value="5">Municipio 5 — Vigentino, Chiaravalle</option>
+        <option value="6">Municipio 6 — Barona, Lorenteggio</option>
+        <option value="7">Municipio 7 — Baggio, De Angeli</option>
+        <option value="8">Municipio 8 — Fiera, Gallaratese</option>
+        <option value="9">Municipio 9 — Niguarda, Bicocca</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Area cani *</label>
+      <select id="zona" name="zona" disabled>
+        <option value="">Prima seleziona il municipio…</option>
+      </select>
+      <a href="mappa.html" style="font-size:.75rem;color:var(--green);font-weight:700;display:inline-block;margin-top:6px;text-decoration:none;">🗺️ Non sai quale area? Cercala sulla mappa</a>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">🐶 Il tuo cane</div>
+
+    <div class="field">
+      <label>Nome del cane *</label>
+      <input type="text" id="nomeCane" name="nomeCane" placeholder="Es. Artù, Luna, Briciola…"/>
+    </div>
+
+    <div class="field">
+      <label>Sesso</label>
+      <div class="check-group">
+        <label class="chip"><input type="radio" name="sesso" value="maschio"><span>♂️</span> Maschio</label>
+        <label class="chip"><input type="radio" name="sesso" value="femmina"><span>♀️</span> Femmina</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Razza</label>
+      <select id="razza" name="razza">
+        <option value="">Seleziona una razza…</option>
+        <option>Affenpinscher</option><option>Akita Inu</option><option>Alano</option>
+        <option>Barboncino / Caniche</option><option>Basenji</option><option>Basset Hound</option>
+        <option>Beagle</option><option>Bernese</option><option>Bichon Frisé</option>
+        <option>Border Collie</option><option>Boxer</option><option>Bracco Italiano</option>
+        <option>Bulldog Francese</option><option>Bulldog Inglese</option><option>Bullmastiff</option>
+        <option>Cairn Terrier</option><option>Cane Corso</option><option>Cavalier King Charles</option>
+        <option>Chihuahua</option><option>Chow Chow</option><option>Cocker Spaniel</option>
+        <option>Corgi</option><option>Dalmata</option><option>Dobermann</option>
+        <option>Dogo Argentino</option><option>Golden Retriever</option><option>Husky Siberiano</option>
+        <option>Jack Russell</option><option>Labrador</option><option>Lagotto Romagnolo</option>
+        <option>Maltese</option><option>Pastore Belga Malinois</option><option>Pastore Tedesco</option>
+        <option>Pitbull / American Staffordshire</option><option>Pomerania</option>
+        <option>Rottweiler</option><option>Samoyedo</option><option>Schnauzer</option>
+        <option>Setter Irlandese</option><option>Shiba Inu</option><option>Shih Tzu</option>
+        <option>Spitz</option><option>Spinone Italiano</option><option>Volpino Italiano</option>
+        <option>Weimaraner</option><option>West Highland Terrier</option><option>Yorkshire Terrier</option>
+        <option>Meticcio</option><option>Altra razza</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Taglia</label>
+      <div class="check-group">
+        <label class="chip"><input type="radio" name="taglia" value="piccola"><span>🐭</span> Piccola</label>
+        <label class="chip"><input type="radio" name="taglia" value="media"><span>🐕</span> Media</label>
+        <label class="chip"><input type="radio" name="taglia" value="grande"><span>🦮</span> Grande</label>
+        <label class="chip"><input type="radio" name="taglia" value="gigante"><span>🐻</span> Gigante</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Età</label>
+      <select id="eta" name="eta">
+        <option value="">Seleziona età…</option>
+        <option value="cucciolo">🐣 Cucciolo (0–1 anno)</option>
+        <option value="giovane">🌱 Giovane (1–3 anni)</option>
+        <option value="adulto">💪 Adulto (3–8 anni)</option>
+        <option value="anziano">🧓 Anziano (8+ anni)</option>
+      </select>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">🕐 Quando venite?</div>
+
+    <div class="field">
+      <label>Orari abituali</label>
+      <div class="check-group">
+        <label class="chip"><input type="checkbox" name="orari" value="mattina_presto"><span>🌅</span> Prima mattina</label>
+        <label class="chip"><input type="checkbox" name="orari" value="mattina"><span>☀️</span> Mattina</label>
+        <label class="chip"><input type="checkbox" name="orari" value="mezzogiorno"><span>🌤️</span> Mezzogiorno</label>
+        <label class="chip"><input type="checkbox" name="orari" value="pomeriggio"><span>🌇</span> Pomeriggio</label>
+        <label class="chip"><input type="checkbox" name="orari" value="sera"><span>🌙</span> Sera</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Giorni preferiti</label>
+      <div class="check-group">
+        <label class="chip"><input type="checkbox" name="giorni" value="feriali"><span>💼</span> Feriali</label>
+        <label class="chip"><input type="checkbox" name="giorni" value="weekend"><span>🎉</span> Weekend</label>
+        <label class="chip"><input type="checkbox" name="giorni" value="tutti"><span>📅</span> Tutti i giorni</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn">🐾 Registra il tuo cane!</button>
+    <p class="privacy-note">Nessun dato personale richiesto. Solo info sul tuo cane 🐶</p>
+  </form>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div style="text-align:center;margin-bottom:16px;">
+      <span style="font-size:64px;display:block;margin-bottom:12px;">🎉</span>
+      <h2 style="font-family:'Fredoka One',cursive;font-size:1.8rem;color:var(--green);margin-bottom:12px;">Bentornato nel branco!</h2>
+      <div class="dog-name-display" id="successName"></div>
+    </div>
+
+    <div class="value-box">
+      <div class="value-row">
+        <span style="font-size:1.3rem;flex-shrink:0;">✅</span>
+        <div><div class="value-title">Il tuo cane è ora visibile</div><div class="value-desc">È stato registrato nell'area <strong style="color:#fff;" id="successZona"></strong>.</div></div>
+      </div>
+      <div class="value-row">
+        <span style="font-size:1.3rem;flex-shrink:0;">🗺️</span>
+        <div><div class="value-title">Scopri chi frequenta questa area</div><div class="value-desc">Apri la mappa e vedi tutti i cani registrati vicino a te, con orari e abitudini.</div></div>
+      </div>
+      <div class="value-row">
+        <span style="font-size:1.3rem;flex-shrink:0;">🤝</span>
+        <div><div class="value-title">Connettiti con i proprietari vicino a te</div><div class="value-desc">Altri proprietari potranno sapere quando frequentate questa area. Tutto gratis.</div></div>
+      </div>
+    </div>
+
+    <div class="about-box">
+      <div class="about-header">
+        <svg width="56" height="56" viewBox="0 0 72 72" fill="none" style="flex-shrink:0;">
+          <circle cx="36" cy="36" r="36" fill="#2A5F3F"/>
+          <rect x="20" y="44" width="32" height="18" rx="8" fill="#1a1a2e"/>
+          <rect x="30" y="38" width="12" height="8" rx="4" fill="#F5C5A3"/>
+          <ellipse cx="36" cy="28" rx="13" ry="14" fill="#F5C5A3"/>
+          <ellipse cx="36" cy="17" rx="13" ry="6" fill="#3B2A1A"/>
+          <rect x="23" y="17" width="4" height="10" rx="2" fill="#3B2A1A"/>
+          <rect x="45" y="17" width="4" height="10" rx="2" fill="#3B2A1A"/>
+          <rect x="24" y="25" width="10" height="7" rx="3" fill="none" stroke="#1a1a2e" stroke-width="1.8"/>
+          <rect x="38" y="25" width="10" height="7" rx="3" fill="none" stroke="#1a1a2e" stroke-width="1.8"/>
+          <line x1="34" y1="28.5" x2="38" y2="28.5" stroke="#1a1a2e" stroke-width="1.5"/>
+          <line x1="22" y1="28.5" x2="24" y2="28.5" stroke="#1a1a2e" stroke-width="1.5"/>
+          <line x1="48" y1="28.5" x2="50" y2="28.5" stroke="#1a1a2e" stroke-width="1.5"/>
+          <circle cx="29" cy="28.5" r="1.5" fill="#3B2A1A"/>
+          <circle cx="43" cy="28.5" r="1.5" fill="#3B2A1A"/>
+          <path d="M30 34 Q36 38 42 34" stroke="#C49A7A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="36" cy="35" rx="6" ry="3" fill="#C49A7A" opacity="0.4"/>
+          <circle cx="26" cy="56" r="7" fill="#8B4513"/>
+          <circle cx="22" cy="52" r="4" fill="#8B4513"/>
+          <circle cx="30" cy="52" r="4" fill="#8B4513"/>
+          <circle cx="26" cy="48" r="5" fill="#8B4513"/>
+          <circle cx="24.5" cy="47.5" r="1" fill="#1a1a2e"/>
+          <circle cx="27.5" cy="47.5" r="1" fill="#1a1a2e"/>
+          <ellipse cx="26" cy="49.5" rx="2" ry="1.2" fill="#6B3410"/>
+        </svg>
+        <div>
+          <div style="font-family:'Fredoka One',cursive;font-size:1rem;color:var(--green);">Angelo e Ugotto</div>
+          <div style="font-size:.75rem;color:var(--grey);font-weight:700;margin-top:2px;">Fondatore · Municipio 3, Milano</div>
+        </div>
+      </div>
+      <p class="about-text">Ciao! Sono Angelo, proprietario di Ugotto. Ho creato questa applicazione perché ogni mattina mi chiedevo: <em>"chi altri porta il suo amichetto qui?"</em> Si tratta di un progetto personale, portato avanti la sera con tanto caffè e zero budget. Se ti piace e vuoi aiutarmi a tenerlo vivo e a migliorarlo, anche un piccolo contributo fa la differenza. 🙏</p>
+      <div class="donate-label">☕ Offrimi un caffè (facoltativo)</div>
+      <div class="donate-btns">
+        <a href="https://paypal.me/tomangelo91/2" onclick="trackEvent('donazione_click','monetizzazione','2euro')" target="_blank" class="donate-btn donate-btn-2">☕ €2</a>
+        <a href="https://paypal.me/tomangelo91/5" onclick="trackEvent('donazione_click','monetizzazione','5euro')" target="_blank" class="donate-btn donate-btn-5">🍕 €5</a>
+        <a href="https://paypal.me/tomangelo91/10" onclick="trackEvent('donazione_click','monetizzazione','10euro')" target="_blank" class="donate-btn donate-btn-10">🚀 €10</a>
+      </div>
+    </div>
+
+    <a href="mappa.html" class="btn-mappa" onclick="trackEvent('vai_mappa','navigation','success_screen')" style="margin-top:14px;background:var(--green);color:#fff;border-color:var(--green);">🗺️ Vai alla mappa</a>
+
+    <button class="share-btn" onclick="shareLink()">📤 Condividi MilanoDogger con un amico</button>
+
+    <div class="divider"></div>
+    <div class="contact-box">
+      <p>Hai suggerimenti, segnalazioni o vuoi collaborare al progetto? Scrivimi direttamente.</p>
+      <a href="mailto:tomangelo91@gmail.com" class="contact-link">✉️ Scrivimi</a>
+    </div>
+  </div>
+
+</div>
+
+<div id="shareToast" class="share-toast">✅ Link copiato negli appunti!</div>
+<footer><strong>🐾 MilanoDogger</strong><br>La community dei proprietari di cane di Milano</footer>
+
+<script>
+const AREE = {"1":["giardini Montanelli Indro","giardino Custrà Antonio","giardino Malgeri Alfredo","giardino Renata Tebaldi","giardino Roberto Bazlen","giardino della Guastalla","largo Quinto Alpini","parco Papa Giovanni Paolo II","parco Sempione","piazza Venino","piazzale Baracca","via Ronzoni","viale Beatrice d'Este","viale Bianca Maria","viale Caldara","viale Elvezia","viale Monte Santo"],"2":["giardino Aldo Protti e Gregor Mendel","giardino Franca Rame","giardino Gabriele Basilico","giardino Sandra Mondaini e Raimondo Vianello","largo San Valentino","parco Adriano","parco Francesco Di Cataldo","parco Martiri delle Libertà Iracheni Vittime del Terrorismo","parco Panza","parco Trotter","parco Villa Finzi","piazza Carbonari","piazzale Farina","via Cislaghi","via Giacosa","via Giulietti","via Mulas","via Rucellai","viale Monza","vie Breda - Angeleri","vie Dal Pozzo Toscanelli - Rottole","vie Giacometti - Gilardi - Breda","vie Mariani Pompeo - Padre Semeria","vie Petrocchi - Bertelli","vie Rho - Conti Carlo","vie Trasimeno - San Mamete","vie Vittorelli - Padova","vie Zuretti - Tirano - Naviglio Martesana"],"3":["cavalcavia Buccari - via Tucidide","giardini Giovanni Falcone e Paolo Borsellino","giardino Alberto Vigevani","giardino Buonantuono Carlo e Tumminello Vincenzo","giardino Fausto Tinelli e Lorenzo Iannucci","giardino Italo Pietra","giardino Marisa Bellisario","giardino Polotti Giulio","giardino Ramelli Sergio","giardino Teresa Pomodoro","giardino sorelle Mirabal ''Las Mariposas''","parco della Lambretta","piazzale Bacone","piazzale Gorini","piazzale Susa","via Don Calabria n. 6","via Feltre","via Marescalchi - San Gerolamo","via Morgagni G.B.","via Olgettina","via Pini","via Pitteri","via Rizzoli","viale Argonne","vie Cima - Bistolfi","vie Pascal - Valvassori Peroni - Clericetti"],"4":["giardino Candia Marcello","giardino Francesco Rucci","giardino Oreste Del Buono","parco Alessandrini","parco Forlanini","parco Formentano","parco Galli","piazza Bologna - via Sceiwiller - Bacchiglione","piazza Insubria","piazza Ovidio","piazzale Libia","piazzale Rosa Gabriele","via Cassinis","via Caviglia","via Manzù","via Rogoredo","via Rosselli fratelli","via San Martino Don Carlo","via San Venerio","via Serrati","via Sordello","via Sulmona","via Vittorini Elio","viale Cirene","vie Cadibona - Monte Velino","vie Dalmazia - Toscolano","vie Facchinetti - Bellosio","vie Forlanini - Garavaglia","vie Marignano - Busseto - Fidenza","vie Mecenate - Maderna","vie Medici del Vascello - Merezzate - Colorni","vie Nervesa - Gonzales","vie Salomone - Quintiliano","vie Zama - Salomone"],"5":["giardino Agnesi Maria Teresa","parco Autieri d'Italia","parco Chiesa Rossa","parco Giovannino Guareschi e Alberto Manzi","parco Ravizza","parco della Resistenza","parco della Vettabbia","parco delle memorie industriali","piazza Sraffa","piazza Trento","via Bottoni","via Comisso","via Costantino Baroni","via De Sanctis","via Don Rodrigo","via Fra Pampuri Riccardo","via Manduria","via San Dionigi","via San Domenico Savio","via dei Missaglia","viale Giovanni da Cermenate","viale Ortles - Calabiana","vie Aicardo - Boeri - Giovanni da Cermenate - piazza caduti del Lavoro","vie Balduccio da Pisa - Calabiana","vie Banfi G. - Calzolari - Largo Muzio","vie Broni - Gargano","vie Bugatto Zanetto - Erice","vie Chiesa Rossa - Sant'Abbondio","vie Donna Prassede, Boffalora, Jan Palach","vie Garelli - Stucchi - Selvanesco - Romeo","vie Gratosoglio - Feraboli","vie Orlando - Feraboli"],"6":["giardino Alberto Moravia","giardino Anna Del Bo Boffino","giardino Ascanio Raffaele Ciriello","giardino Vincenzo Muccioli","giardino Yitzhak Rabin","giardino delle Crocerossine","largo Giambellino","parco Andrea Campagna","parco Giuseppe Sala","parco Giussani Don Luigi","parco Robert Baden Powell","parco dei Fontanili","parco ex Sieroterapico","piazza Frattini","piazza Napoli","piazza Tirana","piazza delle Milizie","piazzale delle Bande Nere","via Argelati","via Koch","via Lorenteggio","via Martinelli","via Parenzo","via San Paolino - San Vigilio","via degli Anemoni - Gigli - dei Giacinti - Primaticcio","via della Ferrera","vie Bari - Faenza - Tobagi","vie Bellini - Brunelleschi","vie Boffalora - Barona - Don Primo Mazzolari","vie Cascina Bianca - De Pretis - Danusso - Finetti","vie Filippo da Liscate - Russoli","vie Gonin - Giordani","vie Lodovico il Moro - Santi F.","vie Lorenteggio - Bisceglie - Giordani","vie Ovada - San Vigilio","vie Primaticcio - Legioni Romane","vie Rimini - La Spezia - Famagosta","vie Rondoni - Neri","vie Savona - Brunelleschi","vie Strozzi - Caterina da Forlì","vie Voltri - De Nicola","vie Voltri - Ovada"],"7":["giardino A.I.D.O.","giardino Carlo Ramous","giardino Marangoni Luigi","giardino Sant'Annibale Maria di Francia","parco Annarumma Antonio","parco delle Cave","parco di Baggio","parco in Memoria delle vittime Italiane nei Gulag","piazza Brescia","piazza Melozzo da Forlì","piazza Po","piazza Segesta","piazza Selinunte","piazza Sicilia","piazza Siena","quartiere Muggiano","via Arcangeli","via Dezza","via Luraghi","via Noale","via Tofano","via Zoia Fratelli","vie Amantea - Budrio","vie Colombi - Bentivoglio - Viterbo","vie Diotti - Quinto Romano - Colla","vie Fornari, Marostica, Massaua","vie Lucca - Zurigo - Isola di Creta","vie Marchesi - Taggia - Paone","vie Tosi - San Giusto - Pio II","vie Val d'Intelvi - Sgambati","vie Valsesia - Parri - Bucone"],"8":["giardini dei Caduti di Nassiriya","giardino Carmelo Bene","giardino Ilaria Alpi","giardino Pierangelo Bertoli","giardino Salvador Allende","parco Cascina Merlata","parco Franco Verga","parco Guido Vergani","parco Sandro Pertini","parco Testori","parco Valentino Bompiani","parco di Villa Scheibler","piazza Coriolano","piazza Firenze","piazza Giulio Cesare","piazzale Accursio","piazzale Chiesa Damiano","piazzale Lotto","via Chiarelli","via De Roberto","via Lampugnano","via Sapri","via Terzaghi","via Tolentino","vie Aldini - Graf","vie Appennini - Consolini - Bolla","vie Boine - Collecchio","vie Borsa - Cilea","vie Castelli - Fusinato - Riccione","vie Fabrizi, Cinque Maggio, Aldini, Eritrea","vie Ludovico di Breme - Giovanni da Udine","vie Messina - Calvino","vie Traiano - Colonna - Arnaboldi","vie Trenno - Ippodromo","vie Villapizzone - Cretese"],"9":["giardino Bruno Munari","giardino Gina Galeotti Bianchi","giardino Maria Peron e suor Giovanna Mosna","giardino Pagani Cesare","giardino Wanda Osiris","parco Nicolò Savarino","parco Nord","parco Villa Litta","parco Walter Chiari","parco biblioteca degli alberi","parco della Torre","parco delle Favole","piazza Einaudi - viale della Liberazione","piazzale Lugano","piazzale Maciachini - Marche - Valassina","via Cagni","via De Castillia","via Gregorovius","via Maloja","via Racconigi","via Santagostino Paolo","viale Ca' Granda - De Angelis","viale Cà Granda - Testi - Guarini Matteucci","viale Fermi Enrico","viale Fulvio Testi - della Porta","viale Sarca - Silvestri","viale Sarca - via Cozzi","viali Sarca - Silvestri - Fulvio Testi","vie Bovisasca - Cosenz","vie Bovisasca - Modignani - Assietta Pioppeto Boviscasca","vie Catone - Maffucci","vie Cusio - Toce - Boltraffio","vie Della Senna - Fontanelli","vie Don Grioli - Cialdini - Pellegrino Rossi","vie Dora Riparia - Carli - Salvemini","vie Forni - Comasina - Modignani","vie Giolli - Testi","vie Maffucci - Acerenza","vie Pesaro - Urbino","vie Populonia - Murat - Valassina","vie Pozzobonelli, Sogno","vie Sarca - Emanueli","vie Senigallia - Girardengo","vie Sesto San Giovanni - Padre Gerardo Beccaro","vie Siderno - Padre Luigi Monti - Gatti","vie Stelvio - Bassi","vie Tartini - Candiani","vie Val Cismon - Padre Luigi Monti","vie Vincenzo da Seregno - Bisnati"]};
+
+const AREA_TO_MUN = {};
+Object.entries(AREE).forEach(([m,aree])=>aree.forEach(a=>AREA_TO_MUN[a]=m));
+
+const pb=document.getElementById('pawsBg');
+for(let i=0;i<24;i++){const s=document.createElement('span');s.textContent='🐾';pb.appendChild(s);}
+
+const selM=document.getElementById('municipio');
+const selZ=document.getElementById('zona');
+
+function populateZone(mun, preselect){
+  selZ.innerHTML='<option value="">Seleziona l\'area…</option>';
+  if(!mun){selZ.disabled=true;return;}
+  (AREE[mun]||[]).forEach(a=>{
+    const o=document.createElement('option');
+    o.value=o.textContent=a;
+    if(a===preselect)o.selected=true;
+    selZ.appendChild(o);
+  });
+  selZ.disabled=false;
+}
+
+selM.addEventListener('change',()=>populateZone(selM.value,null));
+
+const params=new URLSearchParams(window.location.search);
+const areaParam=params.get('area')||'';
+if(areaParam){
+  const m=AREA_TO_MUN[areaParam];
+  if(m){selM.value=m;populateZone(m,areaParam);}
+}
+
+document.getElementById('dogForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const zona=selZ.value.trim();
+  const nomeCane=document.getElementById('nomeCane').value.trim();
+  if(!zona){selZ.classList.add('err');selZ.focus();setTimeout(()=>selZ.classList.remove('err'),2000);return;}
+  if(!nomeCane){const el=document.getElementById('nomeCane');el.classList.add('err');el.focus();el.addEventListener('input',()=>el.classList.remove('err'),{once:true});return;}
+  const sesso=(document.querySelector('input[name=sesso]:checked')||{}).value||'';
+    const taglia=(document.querySelector('input[name=taglia]:checked')||{}).value||'';
+  const orari=[...document.querySelectorAll('input[name=orari]:checked')].map(c=>c.value).join(', ');
+  const giorni=[...document.querySelectorAll('input[name=giorni]:checked')].map(c=>c.value).join(', ');
+  const payload={zona,nomeCane,sesso,razza:document.getElementById('razza').value,eta:document.getElementById('eta').value,taglia,orari,giorni,timestamp:new Date().toISOString()};
+  const btn=document.querySelector('.btn');
+  btn.disabled=true;btn.textContent='⏳ Registrazione in corso…';
+  fetch('https://script.google.com/macros/s/AKfycby5dDuoyLtQj5uAAI-rrB9NnL6h85CuZyLQ4XeBBjhs2J_U-4WYYE75TliaW88OPKM/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+  .catch(()=>{}).finally(()=>{
+    document.getElementById('successName').textContent=nomeCane;
+    document.getElementById('successZona').textContent=zona;
+    document.getElementById('dogForm').style.display='none';
+    document.getElementById('successScreen').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+    trackEvent('registrazione_completata', 'form', zona);
+  });
+});
+
+function shareLink(){
+  trackEvent('condividi_click', 'engagement', 'form');
+  const url='https://milanodogger.netlify.app';
+  const text='🐾 Registra il tuo cane su MilanoDogger e scopri chi frequenta la tua area cani!';
+  if(navigator.share){navigator.share({title:'MilanoDogger',text,url}).catch(()=>{});}
+  else{navigator.clipboard.writeText(url).then(()=>{const t=document.getElementById('shareToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);});}
+}
+</script>
+</body>
+</html>
