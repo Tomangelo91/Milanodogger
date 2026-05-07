@@ -512,7 +512,7 @@ document.addEventListener('click', ()=>closeMenu());
 
 function shareMappa(){
   trackEvent('condividi_click','engagement','mappa');
-  const url='https://milanodogger.netlify.app/mappa.html';
+  const url='https://tomangelo91.github.io/Milanodogger/mappa.html';
   const text='🗺️ Guarda la mappa delle aree cani di Milano su MilanoDogger!';
   if(navigator.share){navigator.share({title:'MilanoDogger — Mappa',text,url}).catch(()=>{});}
   else{

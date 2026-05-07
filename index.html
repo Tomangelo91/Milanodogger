@@ -410,7 +410,7 @@ document.getElementById('dogForm').addEventListener('submit',function(e){
 
 function shareLink(){
   trackEvent('condividi_click', 'engagement', 'form');
-  const url='https://milanodogger.netlify.app';
+  const url='https://tomangelo91.github.io/Milanodogger';
   const text='🐾 Registra il tuo cane su MilanoDogger e scopri chi frequenta la tua area cani!';
   if(navigator.share){navigator.share({title:'MilanoDogger',text,url}).catch(()=>{});}
   else{navigator.clipboard.writeText(url).then(()=>{const t=document.getElementById('shareToast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);});}
@@ -418,4 +418,3 @@ function shareLink(){
 </script>
 </body>
 </html>
-<!-- v1.2 privacy -->
