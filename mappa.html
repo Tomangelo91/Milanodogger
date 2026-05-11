@@ -387,7 +387,7 @@ async function fetchAree(){
 }
 
 // ── PARSE CSV ────────────────────────────────────────────────────────────
-const CSV_HEADERS = ['zona','nomeCane','sesso','razza','eta','taglia','orari','giorni','timestamp'];
+const CSV_HEADERS = ['id','zona','municipio','nomeCane','sesso','razza','taglia','eta','orari','giorni','timestamp','tipo','hash'];
 function parseLine(line){
   const vals=[]; let cur='', inQ=false;
   for(const c of line){
@@ -409,7 +409,7 @@ function parseCSV(text){
     const obj={};
     CSV_HEADERS.forEach((h,i)=>obj[h]=(vals[i]||'').trim());
     return obj;
-  }).filter(d=>d.nomeCane); // rimuove righe vuote
+  }).filter(d=>d.nomeCane && d.nomeCane !== 'nomeCane'); // rimuove righe vuote e header
 }
 
 // ── CUSTOM ICONS ─────────────────────────────────────────────────────────
