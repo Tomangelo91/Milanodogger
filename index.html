@@ -367,7 +367,7 @@ document.getElementById('dogForm').addEventListener('submit',function(e){
   };
   const btn=document.querySelector('.btn');
   btn.disabled=true;btn.textContent='⏳ Registrazione in corso…';
-  fetch('https://script.google.com/macros/s/AKfycby5dDuoyLtQj5uAAI-rrB9NnL6h85CuZyLQ4XeBBjhs2J_U-4WYYE75TliaW88OPKM/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+  fetch('https://script.google.com/macros/s/AKfycbwl9bYmEQC6-UV9jU9hOyTwOXMSs-ZZ1LXngj5q2rcyan3Jl_p5-mBUCzQniPnMFPc/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
   .catch(()=>{}).finally(()=>{
     document.getElementById('successName').textContent=nomeCane;
     document.getElementById('successZona').textContent=zona;
