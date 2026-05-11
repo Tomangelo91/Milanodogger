@@ -357,7 +357,14 @@ document.getElementById('dogForm').addEventListener('submit',function(e){
     const taglia=(document.querySelector('input[name=taglia]:checked')||{}).value||'';
   const orari=[...document.querySelectorAll('input[name=orari]:checked')].map(c=>c.value).join(', ');
   const giorni=[...document.querySelectorAll('input[name=giorni]:checked')].map(c=>c.value).join(', ');
-  const payload={zona,nomeCane,sesso,razza:document.getElementById('razza').value,eta:document.getElementById('eta').value,taglia,orari,giorni,timestamp:new Date().toISOString()};
+  const payload={
+    zona, nomeCane, sesso,
+    municipio: selM.value,
+    razza: document.getElementById('razza').value,
+    eta:   document.getElementById('eta').value,
+    taglia, orari, giorni,
+    timestamp: new Date().toISOString()
+  };
   const btn=document.querySelector('.btn');
   btn.disabled=true;btn.textContent='⏳ Registrazione in corso…';
   fetch('https://script.google.com/macros/s/AKfycby5dDuoyLtQj5uAAI-rrB9NnL6h85CuZyLQ4XeBBjhs2J_U-4WYYE75TliaW88OPKM/exec',{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
