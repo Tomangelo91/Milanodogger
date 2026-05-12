@@ -470,11 +470,23 @@ async function loadData(){
   try{
     const r = await fetch(SHEET_CSV_URL);
     const txt = await r.text();
-    console.log('CSV risposta (prime 300 chars):', txt.substring(0,300));
     dogs = parseCSV(txt);
-    console.log('Record parsati:', dogs.length);
-    if(dogs.length>0) console.log('Primo record:', JSON.stringify(dogs[0]));
-  } catch(e){ console.warn('Sheet non raggiungibile', e); }
+    const dbg = document.getElementById('debugContent');
+    const panel = document.getElementById('debugPanel');
+    dbg.innerHTML = `
+      <b>Fetch:</b> OK (${txt.length} chars)<br>
+      <b>Righe CSV:</b> ${txt.trim().split('\n').length}<br>
+      <b>Record parsati:</b> ${dogs.length}<br>
+      <b>Prima riga:</b> ${txt.substring(0,100)}<br>
+      ${dogs.length>0?'<b>Primo cane:</b> '+dogs[0].nomeCane+' / '+dogs[0].zona:'<b>⚠️ Nessun cane trovato</b>'}
+    `;
+    panel.style.display = 'block';
+  } catch(e){
+    const dbg = document.getElementById('debugContent');
+    document.getElementById('debugPanel').style.display = 'block';
+    dbg.innerHTML = '<b>❌ Errore fetch:</b> ' + e.toString();
+    console.warn('Sheet non raggiungibile', e);
+  }
 
   // Raggruppa cani per nome area (lowercase trim per sicurezza)
   const dogsByArea={};
