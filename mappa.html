@@ -515,9 +515,11 @@ async function loadData(){
   document.getElementById('statAttive').textContent = areeAttive;
 
   // Hide loading
-  const ld=document.getElementById('loading');
-  ld.style.opacity='0';
-  setTimeout(()=>ld.style.display='none',400);
+  try{
+    const ld=document.getElementById('loading');
+    ld.style.opacity='0';
+    setTimeout(()=>ld.style.display='none',400);
+  } catch(e){}
 }
 
 function toggleMenu(e){
@@ -544,6 +546,12 @@ function shareMappa(){
     });
   }
 }
+
+// Timeout sicurezza — nasconde loading dopo 8 secondi in ogni caso
+setTimeout(()=>{
+  const ld=document.getElementById('loading');
+  if(ld) { ld.style.opacity='0'; setTimeout(()=>ld.style.display='none',400); }
+}, 8000);
 
 loadData();
 </script>
