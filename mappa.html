@@ -399,11 +399,15 @@ function parseLine(line){
   return vals;
 }
 function parseCSV(text){
+  // Rimuove BOM se presente
+  text = text.replace(/^\uFEFF/, '');
   const lines = text.trim().split('\n').filter(l=>l.trim());
+  console.log('Righe CSV totali:', lines.length);
   if(!lines.length) return [];
-  // Salta la prima riga se è un header (contiene 'zona' o 'nomecane')
+  // Salta la prima riga se è un header
   const firstLow = lines[0].toLowerCase();
-  const startIdx = (firstLow.includes('zona') || firstLow.includes('nomecane')) ? 1 : 0;
+  const startIdx = (firstLow.includes('zona') || firstLow.includes('nomecane') || firstLow.includes('id')) ? 1 : 0;
+  console.log('Header rilevato:', startIdx===1, '| Prima riga:', lines[0].substring(0,80));
   return lines.slice(startIdx).map(line=>{
     const vals = parseLine(line);
     const obj={};
@@ -466,8 +470,11 @@ async function loadData(){
   try{
     const r = await fetch(SHEET_CSV_URL);
     const txt = await r.text();
+    console.log('CSV risposta (prime 300 chars):', txt.substring(0,300));
     dogs = parseCSV(txt);
-  } catch(e){ console.warn('Sheet non raggiungibile',e); }
+    console.log('Record parsati:', dogs.length);
+    if(dogs.length>0) console.log('Primo record:', JSON.stringify(dogs[0]));
+  } catch(e){ console.warn('Sheet non raggiungibile', e); }
 
   // Raggruppa cani per nome area (lowercase trim per sicurezza)
   const dogsByArea={};
